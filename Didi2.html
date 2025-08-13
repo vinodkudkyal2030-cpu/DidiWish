@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Happy Birthday Didi 🎉</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg1:#ffe2ec;
+    --bg2:#ffc6d9;
+    --accent:#ff6f91;
+    --note:#fff8b5;
+    --ink:#333;
+    --glass: rgba(255,255,255,0.35);
+    --shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;scroll-behavior:smooth;background:linear-gradient(135deg,var(--bg1),var(--bg2));font-family:'Poppins',sans-serif;color:#242424;overflow-x:hidden}
+
+  /* Parallax background bubbles */
+  .parallax-bubble{
+    position:fixed; border-radius:50%; filter:blur(2px); opacity:.18; z-index:-2;
+    animation: drift var(--t, 20s) linear infinite alternate;
+  }
+  .parallax-bubble.b1{width:180px;height:180px;left:5%;top:10%;background:#fff}
+  .parallax-bubble.b2{width:260px;height:260px;right:10%;top:25%;background:#fff; --t:30s}
+  .parallax-bubble.b3{width:140px;height:140px;left:15%;bottom:15%;background:#fff; --t:24s}
+  @keyframes drift{to{transform:translateY(-25px) translateX(15px)}}
+
+  /* Floating emoji decor */
+  .float-emoji{position:fixed; bottom:-50px; font-size:22px; opacity:.85; animation: floatUp 8s linear infinite; z-index:-1}
+  .float-emoji:nth-child(odd){animation-duration:10s}
+  @keyframes floatUp{0%{transform:translateY(0)} 100%{transform:translateY(-120vh)}}
+
+  /* Floating hearts */
+  .float-heart {
+    position: fixed;
+    bottom: -40px;
+    font-size: 20px;
+    opacity: 0.9;
+    animation: heartFloatUp linear infinite;
+    z-index:-1;
+    pointer-events:none;
+  }
+  @keyframes heartFloatUp {
+    0% { transform: translateY(0) scale(1); opacity: 0.9; }
+    100% { transform: translateY(-110vh) scale(1.3); opacity: 0; }
+  }
+
+  /* Sections */
+  section{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:60px 20px; position:relative}
+  .container{width:min(1100px,92vw); margin:0 auto}
+
+  /* Hero */
+  .hero-card{
+    background: var(--glass); backdrop-filter: blur(10px);
+    border:1px solid rgba(255,255,255,0.4); border-radius:24px; box-shadow: var(--shadow);
+    padding:40px; text-align:center;
+  }
+  .title{
+    font-family:'Pacifico',cursive; font-size: clamp(2rem,6vw,4rem); color:#c01d5b; text-shadow: 0 6px 18px rgba(192,29,91,.2);
+    white-space:nowrap; overflow:hidden; border-right:3px solid #c01d5b; width:0;
+    animation: typing 3.2s steps(40) 0.6s forwards, caret 0.7s step-end infinite;
+  }
+  @keyframes typing{to{width:100%}}
+  @keyframes caret{50%{border-color:transparent}}
+
+  .subtitle{margin-top:12px; color:#6b2d4e; font-weight:500; opacity:0; transform:translateY(8px); transition:.8s ease .9s}
+  .subtitle.show{opacity:1; transform:none}
+
+  /* Music control */
+  .music-control{
+    position: fixed; top: 18px; right: 18px; z-index: 20;
+    background:#c01d5b; color:#fff; border:none; padding:10px 14px; border-radius:999px; cursor:pointer; box-shadow: var(--shadow);
+  }
+  .music-control:active{transform:scale(.98)}
+
+  /* Sticky notes grid */
+  .notes-grid{
+    display:grid; grid-template-columns: repeat( auto-fit, minmax(220px,1fr) );
+    gap:18px; margin-top:24px;
+  }
+  .note{
+    background:var(--note); color:var(--ink); border:1px solid #eadf7a;
+    border-radius:12px; padding:18px 16px; box-shadow: 6px 8px 18px rgba(0,0,0,.15);
+    transform: rotate(var(--r, -2deg)) translateY(12px) scale(.98); opacity:0; transition:.8s ease;
+    position:relative; min-height:140px;
+  }
+  .note .pin{
+    width:18px;height:18px; border-radius:50%; background:#ff6f91; position:absolute; left:50%; top:-10px; transform:translateX(-50%);
+    box-shadow: inset -2px -3px 4px rgba(0,0,0,.25);
+  }
+  .note.show{opacity:1; transform: rotate(var(--r, -2deg)) translateY(0) scale(1)}
+  .note h4{margin:.2rem 0 .3rem 0; font-size:1.05rem}
+  .note p{margin:.2rem 0; line-height:1.35}
+
+  /* Reveal button for extra notes */
+  .reveal-wrap{display:flex; justify-content:center; margin-top:18px}
+  .btn{
+    background:#c01d5b; color:#fff; border:none; padding:10px 16px; border-radius:14px; cursor:pointer; box-shadow: var(--shadow); font-weight:600;
+  }
+  .btn:active{transform:scale(.98)}
+
+  /* Slideshow */
+  .slideshow{
+    position:relative; width:100%; height: clamp(240px, 55vh, 480px);
+    border-radius:20px; overflow:hidden; box-shadow: var(--shadow);
+  }
+  .slide{position:absolute; inset:0; opacity:0; transition:opacity 1s ease; background:#000}
+  .slide img{width:100%; height:100%; object-fit:cover; transform: scale(1.08); transition: transform 6s ease}
+  .slide.active{opacity:1}
+  .caption{
+    position:absolute; left:0; right:0; bottom:12px; margin:auto; width:fit-content; max-width:90%;
+    background: rgba(0,0,0,.36); color:#fff; padding:8px 14px; border-radius:999px; font-size:.95rem; backdrop-filter: blur(4px);
+  }
+
+  @media (max-width: 768px) {
+    .slideshow { height: 100vh !important; border-radius: 0 !important; }
+    .slide img { object-fit: cover; height: 100%; }
+  }
+
+  /* Closing card */
+  .closing{ text-align:center; color:#6b2d4e; opacity:0; transform: translateY(12px); transition:.9s ease; }
+  .closing.show{opacity:1; transform:none}
+  .heart-glow{font-size:40px; animation: glow 1.5s infinite alternate}
+  @keyframes glow{from{ text-shadow:0 0 8px #ff9fbd, 0 0 18px #ff6f91 } to{ text-shadow:0 0 16px #ff9fbd, 0 0 32px #ff6f91 }}
+
+  #confetti{position:fixed; inset:0; pointer-events:none; z-index:10}
+</style>
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<!-- Parallax soft bubbles -->
+<div class="parallax-bubble b1"></div>
+<div class="parallax-bubble b2"></div>
+<div class="parallax-bubble b3"></div>
+
+<!-- Floating emojis -->
+<div class="float-emoji" style="left:8%; animation-delay:.2s">🎈</div>
+<div class="float-emoji" style="left:25%; animation-delay:1.5s">✨</div>
+<div class="float-emoji" style="left:55%; animation-delay:.9s">💖</div>
+<div class="float-emoji" style="left:78%; animation-delay:2.2s">🌟</div>
+
+<!-- Autoplay Music -->
+<audio id="music" loop>
+  <source src="birthday-wish.mp3" type="audio/mpeg">
+</audio>
+<button class="music-control" id="musicBtn">▶️ Play Music</button>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-card">
+      <h1 class="title">Happy Birthday, Didi! 🎉</h1>
+      <p class="subtitle reveal">May your day be filled with love, laughter, and endless cake 🍰</p>
+    </div>
+  </div>
+</section>
+
+<!-- NOTES SECTION -->
+<section id="notes">
+  <div class="container">
+    <h2 class="reveal" style="text-align:center;color:#c01d5b;margin-bottom:8px">Little Notes For You 💌</h2>
+    <p class="reveal" style="text-align:center;color:#6b2d4e;margin-top:0">Click to reveal more wishes!</p>
+    <div class="notes-grid">
+      <div class="note" style="--r:-3deg"><div class="pin"></div><h4>To My Didi</h4><p>You’re my first friend, my guide, and my forever cheerleader. Thank you for everything. 💖</p></div>
+      <div class="note" style="--r:2deg"><div class="pin"></div><h4>Shine On ✨</h4><p>May your year sparkle with new adventures, cozy moments, and beautiful surprises.</p></div>
+      <div class="note" style="--r:-1deg"><div class="pin"></div><h4>Always Proud</h4><p>Your kindness and strength inspire me every day. Keep being you. 🌟</p></div>
+      <div class="note extra" style="display:none; --r:1deg"><div class="pin"></div><h4>Our Memories</h4><p>From silly fights to late-night talks—those moments are my treasures. 🤍</p></div>
+      <div class="note extra" style="display:none; --r:-2deg"><div class="pin"></div><h4>Big Hugs</h4><p>Whenever you need me—one call away, always. 🤗</p></div>
+      <div class="note extra" style="display:none; --r:3deg"><div class="pin"></div><h4>Today & Always</h4><p>May you receive all the love you give—times a thousand. 💝</p></div>
+    </div>
+    <div class="reveal-wrap">
+      <button class="btn" id="revealBtn">Show More Notes</button>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDESHOW -->
+<section id="photos">
+  <div class="container" style="max-width:100%; padding:0;">
+    <div class="slideshow reveal" id="slideshow" style="height:100vh;">
+      <div class="slide active"><img src="photo1.jpg" alt="Memory 1"/><div class="caption">Your smile lights up every room 💫</div></div>
+      <div class="slide"><img src="photo2.jpg" alt="Memory 2"/><div class="caption">Laughs that we’ll remember forever</div></div>
+      <div class="slide"><img src="photo3.jpg" alt="Memory 3"/><div class="caption">The best adventure buddy 🚗</div></div>
+      <div class="slide"><img src="photo4.jpg" alt="Memory 4"/><div class="caption">My favorite person to celebrate with 🎊</div></div>
+      <div class="slide"><img src="photo5.jpg" alt="Memory 5"/><div class="caption">From then to now—always us 🤍</div></div>
+      <div class="slide"><img src="photo6.jpg" alt="Memory 6"/><div class="caption">To many more selfies & stories 📱</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WISHES ROTATOR -->
+<section id="wishes">
+  <div class="container">
+    <div class="hero-card reveal" style="text-align:center">
+      <h2 style="margin:0;color:#c01d5b">Always Remember</h2>
+      <p id="rotator" style="font-size:1.2rem;margin:.6rem 0 0 0;color:#6b2d4e; min-height:2.2em"></p>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing">
+  <div class="container">
+    <div class="closing">
+      <h2 style="color:#c01d5b;margin:0 0 10px 0">Happy Birthday, Didi 💝</h2>
+      <p style="margin:0 0 14px 0">May this year be the sweetest chapter yet. I’m always with you—today and always.</p>
+      <div class="heart-glow">❤️</div>
+      <div style="margin-top:16px">
+        <a class="btn" href="#hero">↻ Replay the Surprise</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Intersection observer for reveals
+  const io = new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');}})}, {threshold:.25});
+  document.querySelectorAll('.reveal, .subtitle, .note, .closing').forEach(el=>io.observe(el));
+
+  // Show extra notes
+  document.getElementById('revealBtn').addEventListener('click', ()=>{
+    document.querySelectorAll('.note.extra').forEach((n,i)=>{n.style.display='block';setTimeout(()=>n.classList.add('show'), 30 + i*120);});
+    document.getElementById('revealBtn').disabled = true;
+    document.getElementById('revealBtn').textContent = 'More Notes Unlocked 💝';
+  });
+
+  // Slideshow
+  const slides = [...document.querySelectorAll('.slide')];
+  let idx = 0;
+  setInterval(()=>{slides[idx].classList.remove('active'); idx = (idx + 1) % slides.length; slides[idx].classList.add('active');}, 3200);
+
+  // Wishes rotator
+  const wishes = ["You are loved more than words can say.","Your smile is our sunshine.","Thank you for being my safe place.","May your dreams bloom beautifully.","Keep shining—always, always. ✨","Proud to call you my Didi. 💖"];
+  const rotator = document.getElementById('rotator');
+  let w = 0, c = 0, typing = true;
+  (function typeLoop(){
+    const text = wishes[w];
+    if(typing){c++;rotator.textContent = text.slice(0,c);if(c === text.length){typing = false;setTimeout(typeLoop, 900);return;}}
+    else{c--;rotator.textContent = text.slice(0,c);if(c === 0){typing = true; w = (w+1)%wishes.length;}}
+    setTimeout(typeLoop, typing ? 40 : 18);
+  })();
+
+  // Music logic
+  const music = document.getElementById('music');
+  const musicBtn = document.getElementById('musicBtn');
+  let isPlaying = false;
+
+  function updateBtn() {
+    musicBtn.textContent = isPlaying ? "⏸️ Pause Music" : "▶️ Play Music";
+  }
+
+  musicBtn.addEventListener('click', async () => {
+    if(isPlaying){ await music.pause(); isPlaying=false; }
+    else{ await music.play(); isPlaying=true; }
+    updateBtn();
+  });
+
+  // Play music after first interaction (autoplay with sound)
+  function startMusic() {
+    music.play().then(()=>{isPlaying=true; updateBtn();}).catch(()=>{});
+    window.removeEventListener('click', startMusic);
+  }
+  window.addEventListener('click', startMusic);
+
+  // Floating hearts
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("float-heart");
+    heart.textContent = "❤️";
+    heart.style.left = Math.random() * 100 + "%";
+    heart.style.fontSize = (14 + Math.random()*18) + "px";
+    heart.style.animationDuration = (4 + Math.random()*4) + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 9000);
+  }
+  setInterval(createHeart, 300);
+</script>
+</body>
+</html>
